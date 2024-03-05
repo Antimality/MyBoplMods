@@ -1,0 +1,5 @@
+run*
+*.bat
+*/bin/
+*/obj/
+*/.vs/
