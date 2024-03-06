@@ -62,5 +62,7 @@ DESCRIPTION
 # General TODOs
 * Document refrence code
 * Streamline project creation (create project with all the usual edits/additions to structure)
-* Streamline porject build (DONE)
+* Streamline project build (DONE)
 * -> Debug should goes to Scripts/ & Production to Plugins/ 
+* Transfer to Splotch
+* Change all PatchAll() to PatchAll(typeof(...))
