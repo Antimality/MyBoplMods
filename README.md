@@ -42,6 +42,7 @@ Character cycles colors constantly. More just a POC to see what is possible.
 ### Current Hurdles
 ## Change Default Size
 Change the the size all blobs start from in each round
+* Can turn this into "cat & mice" mode - one player starts two sizes larger at random 
 ### Current Hurdles
 Need to mess with the Session Handler
 ## Quicker Gust
