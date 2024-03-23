@@ -2,16 +2,10 @@
 using BepInEx.Logging;
 using BoplFixedMath;
 using HarmonyLib;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Numerics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-
-// Jewish space laser airstike
-// Force field ability: basically modified gust: very strong but short range
 
 namespace MyFirstBoplPlugin
 {
@@ -69,7 +63,7 @@ namespace MyFirstBoplPlugin
         [HarmonyPostfix]
         public static void StartTimeStop(ref int ___casterId)
         {
-            new TimerTextbox(___casterId);
+            new TimerTextbox(___casterId, casting:true);
         }
 
         [HarmonyPatch(typeof(TimeStop), nameof(TimeStop.End))]
@@ -78,7 +72,7 @@ namespace MyFirstBoplPlugin
         {
             foreach (TimerTextbox box in TimerTextbox.Textboxes)
             {
-                if (box.playerID == ___casterId)
+                if (box.playerID == ___casterId && box.casting)
                 {
                     box.Destroy();
                     break;
@@ -95,7 +89,7 @@ namespace MyFirstBoplPlugin
 
             foreach (TimerTextbox box in TimerTextbox.Textboxes)
             {
-                if (box.playerID == ___casterId)
+                if (box.playerID == ___casterId && box.casting)
                 {
                     box.Update(((int)((float)(___duration - ___secondsElapsed) + 2)).ToString());
                     break;
@@ -116,7 +110,7 @@ namespace MyFirstBoplPlugin
         {
             foreach (TimerTextbox box in TimerTextbox.Textboxes)
             {
-                if (box.playerID == ___playerInfo.playerId)
+                if (box.playerID == ___playerInfo.playerId && !box.casting)
                 {
                     box.Destroy();
                     break;
@@ -136,7 +130,8 @@ namespace MyFirstBoplPlugin
 
             foreach (TimerTextbox box in TimerTextbox.Textboxes)
             {
-                if (box.playerID == ___playerInfo.playerId) {
+                if (box.playerID == ___playerInfo.playerId && !box.casting)
+                {
                     box.Update(((int)((float)(___castTime - ___timeSinceActivation) + 1.5)).ToString());
                     break;
                 }
@@ -150,22 +145,26 @@ namespace MyFirstBoplPlugin
         public static List<TimerTextbox> Textboxes = new List<TimerTextbox>();
 
         public readonly int playerID;
+        public readonly bool casting;
+        private Canvas canvas;
         private GameObject textObj;
         private TextMeshProUGUI textComp;
         private RectTransform location;
 
-        public TimerTextbox(int playerID)
+        public TimerTextbox(int playerID, bool casting=false)
         {
             Textboxes.Add(this);
 
+            // TODO: Diffrentiate the two types
             this.playerID = playerID;
+            this.casting = casting;
 
             Summon();
         }
 
         public void Summon()
         {
-            Canvas canvas = GameObject.Find("AbilitySelectCanvas").GetComponent<Canvas>();
+            canvas = GameObject.Find("AbilitySelectCanvas").GetComponent<Canvas>();
 
             if (canvas == null || !Plugin.currentScene.Contains("Level"))
             {
@@ -182,7 +181,6 @@ namespace MyFirstBoplPlugin
             // Dunno what this does
             textComp.raycastTarget = false;
 
-            textComp.text = "";
             // Color of the casting player
             textComp.color = PlayerHandler.Get().GetPlayer(playerID).Color.GetColor("_ShadowColor");
             textComp.fontSize = 50f;
@@ -191,16 +189,7 @@ namespace MyFirstBoplPlugin
 
             location = textObj.GetComponent<RectTransform>();
             // Moves the refrence point of the textbox to the upper left corner, I think
-            location.pivot = new UnityEngine.Vector2(0, 1);
-
-            // Height and width of the screen, seems to be a little less on the width
-            float canvasHeight = canvas.GetComponent<RectTransform>().rect.height;
-            float canvasWidth = canvas.GetComponent<RectTransform>().rect.width;
-
-            // Relative to the middle of the screen
-            // Top right (ish)
-            // TODO: accomidate more players
-            location.anchoredPosition = new UnityEngine.Vector2(canvasWidth / 2 - 200, canvasHeight / 2 - 100);
+            location.pivot = new Vector2(0, 1);
 
             textObj.SetActive(true);
         }
@@ -212,7 +201,17 @@ namespace MyFirstBoplPlugin
             // TODO: Player location to canvas location
             //Vec2 playerPos = PlayerHandler.Get().GetPlayer(playerID).Position;
             //Plugin.Log.LogInfo(playerPos);
-            //location.anchoredPosition = new UnityEngine.Vector2(((int)playerPos.x)*10, (int)playerPos.y);
+            //location.anchoredPosition = new Vector2(((int)playerPos.x)*10, (int)playerPos.y);
+
+            // Height and width of the screen, seems to be a little less on the width
+            float canvasHeight = canvas.GetComponent<RectTransform>().rect.height;
+            float canvasWidth = canvas.GetComponent<RectTransform>().rect.width;
+
+            // Relative to the middle of the screen
+            // Top right (ish)
+            // TODO: accomidate more players
+            int offset = (Textboxes.IndexOf(this)) * 100;
+            location.anchoredPosition = new Vector2(canvasWidth / 2 - 200, canvasHeight / 2 - 100 - offset);
         }
 
         public void Destroy()
