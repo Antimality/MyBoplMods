@@ -2,7 +2,7 @@
  A collection of my Bopl Battle mods!
 
 # Mods:
-## Time Stop timer
+## [Time Stop Timer](https://github.com/Antimality/MyBoplMods/releases/tag/TimeStopTimer-v1.0.0 "v1.0.0")
 Display how long until time stop starts and how long until it ends
 ## Scale Control (WIP)
 Fight like antman! Enlarge and shrink at will to shoot massive arrows and shrink for last minute dodges! 
