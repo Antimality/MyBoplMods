@@ -1,20 +1,20 @@
 # MyBoplMods
  A collection of my Bopl Battle mods!
 
-# Ideas:
+# Mods:
+## Time Stop timer
+Display how long until time stop starts and how long until it ends
 ## Scale Control (WIP)
 Fight like antman! Enlarge and shrink at will to shoot massive arrows and shrink for last minute dodges! 
 ### Current hurdles
 Currently works in local, more extensive testing needed.
 For it to work on multiplayer I need to change which inputs the game sends and recieves online.
-## Enhanced Grapple (WIP)
+
+# Ideas:
+## Enhanced Grapple
 DESCRIPTION
 ### Current hurdles
 Still haven't figured out how this ability works at all
-## Time Stop timer
-Display how long until time stop starts and how long until it ends
-### Current Hurdles
-Learn how to add ui elements
 ## Rock enhancements:
 * Dry Rock:Rock jumps off water for extreme rock plays!
 * Cancle Rock: Cancel rock at will 
@@ -66,4 +66,3 @@ DESCRIPTION
 * Streamline project build (DONE)
 * -> Debug should goes to Scripts/ & Production to Plugins/ 
 * Transfer to Splotch
-* Change all PatchAll() to PatchAll(typeof(...))
