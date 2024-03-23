@@ -31,7 +31,7 @@ namespace MyFirstBoplPlugin
         private void OnDestroy()
         {
             harmony.UnpatchSelf();
-            DestroyTextboxes();
+            TimerTextbox.DestroyTextboxes();
         }
        
         public static string currentScene;
@@ -42,18 +42,9 @@ namespace MyFirstBoplPlugin
             if (currentScene != SceneManager.GetActiveScene().name)
             {
                 currentScene = SceneManager.GetActiveScene().name;
-                DestroyTextboxes();
+                TimerTextbox.DestroyTextboxes();
             }
         }
-
-        private void DestroyTextboxes()
-        {
-            foreach (TimerTextbox box in TimerTextbox.Textboxes)
-            {
-                box.Destroy();
-            }
-        }
-
     }
 
     [HarmonyPatch]
@@ -84,9 +75,6 @@ namespace MyFirstBoplPlugin
         [HarmonyPrefix]
         public static void DuringTimeStop(ref TimeStop __instance, ref float ___duration, ref float ___secondsElapsed, ref int ___casterId)
         {
-            // This shows me how long the ability is going for. The default duration is 10s + 1.5s of animation exit
-            //Plugin.Log.LogInfo($"Caster {__instance.GetPlayerId()}, Elapsed: {___secondsElapsed}, Duration: {___duration}");
-
             foreach (TimerTextbox box in TimerTextbox.Textboxes)
             {
                 if (box.playerID == ___casterId && box.casting)
@@ -99,9 +87,12 @@ namespace MyFirstBoplPlugin
 
         [HarmonyPatch(typeof(CastSpell), nameof(CastSpell.OnEnterAbility))]
         [HarmonyPostfix]
-        public static void OnCast(ref PlayerInfo ___playerInfo)
+        public static void OnCast(ref GameObject ___spell, ref PlayerInfo ___playerInfo)
         {
-            new TimerTextbox(___playerInfo.playerId);
+            if (___spell.name == "TimeStopSphere")
+            {
+                new TimerTextbox(___playerInfo.playerId);
+            }
         }
 
         [HarmonyPatch(typeof(CastSpell), nameof(CastSpell.ExitAbility), typeof(AbilityExitInfo))]
@@ -122,12 +113,6 @@ namespace MyFirstBoplPlugin
         [HarmonyPrefix]
         public static void CastingTimeStop(ref GameObject ___spell, ref Fix ___castTime, ref Fix ___timeSinceActivation, ref PlayerInfo ___playerInfo)
         {
-            // spell - type of spell (TimeStopSphere)
-            // Cast time - how long the spell takes to activate in seconds (10s)
-            // Time since activation - how long its been since ability started casting (in seconds)
-            
-            //Plugin.Log.LogInfo($"Spell: {___spell}, casttime: {___castTime}, timesince: {___timeSinceActivation}");
-
             foreach (TimerTextbox box in TimerTextbox.Textboxes)
             {
                 if (box.playerID == ___playerInfo.playerId && !box.casting)
@@ -155,7 +140,6 @@ namespace MyFirstBoplPlugin
         {
             Textboxes.Add(this);
 
-            // TODO: Diffrentiate the two types
             this.playerID = playerID;
             this.casting = casting;
 
@@ -196,20 +180,17 @@ namespace MyFirstBoplPlugin
 
         public void Update(string text)
         {
+            // TODO: Self delete if time is 0?
             textComp.text = text;
 
             // TODO: Player location to canvas location
-            //Vec2 playerPos = PlayerHandler.Get().GetPlayer(playerID).Position;
-            //Plugin.Log.LogInfo(playerPos);
-            //location.anchoredPosition = new Vector2(((int)playerPos.x)*10, (int)playerPos.y);
 
-            // Height and width of the screen, seems to be a little less on the width
+            // Height and width of the screen, roughly
             float canvasHeight = canvas.GetComponent<RectTransform>().rect.height;
             float canvasWidth = canvas.GetComponent<RectTransform>().rect.width;
 
             // Relative to the middle of the screen
             // Top right (ish)
-            // TODO: accomidate more players
             int offset = (Textboxes.IndexOf(this)) * 100;
             location.anchoredPosition = new Vector2(canvasWidth / 2 - 200, canvasHeight / 2 - 100 - offset);
         }
@@ -220,9 +201,12 @@ namespace MyFirstBoplPlugin
             GameObject.Destroy(textObj);
         }
 
-        public override string ToString()
+        public static void DestroyTextboxes()
         {
-            return textObj.ToString();
+            for (int i = Textboxes.Count - 1; i >= 0; i--)
+            {
+                Textboxes[i].Destroy();
+            }
         }
     }
 }
