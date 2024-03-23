@@ -24,7 +24,7 @@ namespace EnhancedGrapple
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_NAME} is loaded!");
             harmony = new("me.antimality." + PluginInfo.PLUGIN_NAME);
 
-            harmony.PatchAll();
+            harmony.PatchAll(typeof(Patch));
         }
 
         private void OnDestroy()

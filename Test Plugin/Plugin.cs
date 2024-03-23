@@ -20,7 +20,7 @@ namespace MyFirstBoplPlugin
 
             harmony = new("me.antimality." + PluginInfo.PLUGIN_NAME);
 
-            harmony.PatchAll();
+            harmony.PatchAll(typeof(Patch));
         }
 
         private void OnDestroy()
