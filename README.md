@@ -42,6 +42,7 @@ Character cycles colors constantly. More just a POC to see what is possible.
 ### Current Hurdles
 ## Change Default Size
 Change the the size all blobs start from in each round
+* Can turn this into "cat & mice" mode - one player starts two sizes larger at random 
 ### Current Hurdles
 Need to mess with the Session Handler
 ## Quicker Gust
@@ -62,5 +63,7 @@ DESCRIPTION
 # General TODOs
 * Document refrence code
 * Streamline project creation (create project with all the usual edits/additions to structure)
-* Streamline porject build (DONE)
+* Streamline project build (DONE)
 * -> Debug should goes to Scripts/ & Production to Plugins/ 
+* Transfer to Splotch
+* Change all PatchAll() to PatchAll(typeof(...))
