@@ -31,7 +31,7 @@ namespace MyFirstBoplPlugin
         private void OnDestroy()
         {
             harmony.UnpatchSelf();
-            TimerTextbox.DestroyTextboxes();
+            TimerTextbox.DisposeAll();
         }
        
         public static string currentScene;
@@ -42,7 +42,7 @@ namespace MyFirstBoplPlugin
             if (currentScene != SceneManager.GetActiveScene().name)
             {
                 currentScene = SceneManager.GetActiveScene().name;
-                TimerTextbox.DestroyTextboxes();
+                TimerTextbox.DisposeAll();
             }
         }
     }
@@ -65,7 +65,7 @@ namespace MyFirstBoplPlugin
             {
                 if (box.playerID == ___casterId && box.casting)
                 {
-                    box.Destroy();
+                    box.Dispose();
                     break;
                 }
             }
@@ -79,7 +79,7 @@ namespace MyFirstBoplPlugin
             {
                 if (box.playerID == ___casterId && box.casting)
                 {
-                    box.Update(((int)((float)(___duration - ___secondsElapsed) + 2)).ToString());
+                    box.Update((float)(___duration - ___secondsElapsed) + 2f);
                     break;
                 }
             }
@@ -103,7 +103,7 @@ namespace MyFirstBoplPlugin
             {
                 if (box.playerID == ___playerInfo.playerId && !box.casting)
                 {
-                    box.Destroy();
+                    box.Dispose();
                     break;
                 }
             }
@@ -117,7 +117,7 @@ namespace MyFirstBoplPlugin
             {
                 if (box.playerID == ___playerInfo.playerId && !box.casting)
                 {
-                    box.Update(((int)((float)(___castTime - ___timeSinceActivation) + 1.5)).ToString());
+                    box.Update((float)(___castTime - ___timeSinceActivation) + 1.25f);
                     break;
                 }
             }
@@ -178,10 +178,15 @@ namespace MyFirstBoplPlugin
             textObj.SetActive(true);
         }
 
-        public void Update(string text)
+        public void Update(float time)
         {
-            // TODO: Self delete if time is 0?
-            textComp.text = text;
+            if (time < 1)
+            {
+                Dispose();
+                return;
+            }
+
+            textComp.text = ((int)time).ToString();
 
             // TODO: Player location to canvas location
 
@@ -195,17 +200,17 @@ namespace MyFirstBoplPlugin
             location.anchoredPosition = new Vector2(canvasWidth / 2 - 200, canvasHeight / 2 - 100 - offset);
         }
 
-        public void Destroy()
+        public void Dispose()
         {
             Textboxes.Remove(this);
             GameObject.Destroy(textObj);
         }
 
-        public static void DestroyTextboxes()
+        public static void DisposeAll()
         {
             for (int i = Textboxes.Count - 1; i >= 0; i--)
             {
-                Textboxes[i].Destroy();
+                Textboxes[i].Dispose();
             }
         }
     }
