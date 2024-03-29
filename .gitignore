@@ -1,10 +1,12 @@
 # My files
 *.bat
 *.txt
-TemplatePlugin.cs
+Template*
 
 # Output and enviroment files
 */bin/
 */obj/
 */.vs/
 *.sln
+*.csproj
+*NuGet.Config
