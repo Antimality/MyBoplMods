@@ -27,7 +27,6 @@ Change which ability (left/right/middle) get's swichted when picking up a new ab
 None expected, use AbilityStorm for refrence
 ## Ability Reroll
 Reroll abilities once per round. Good for all random games or when you get super countered and need a hail-mary.
-### Current Hurdles
 ## Ride The Lightning
 Tesla coil is a solid surface instead of a damaging line. You can still kill directly by squishing, or combo with other abilities, such as Sonic for increased range.
 * Bonus, thowable coil?
@@ -36,10 +35,8 @@ No idea how to make/work with Physics objects
 ## Loadouts
 Save/load premade ability loadouts.
 * Simpler version: button that sets everyone to all random in ability selection screen.
-### Current Hurdles
 ## Rainbow Player
 Character cycles colors constantly. More just a POC to see what is possible.
-### Current Hurdles
 ## Change Default Size
 Change the the size all blobs start from in each round
 * Can turn this into "cat & mice" mode - one player starts two sizes larger at random 
@@ -47,13 +44,6 @@ Change the the size all blobs start from in each round
 Need to mess with the Session Handler
 ## Quicker Gust
 I just hate the buildup time on gust, make it shorter
-### Current Hurdles
-## NAME
-DESCRIPTION
-### Current Hurdles
-## NAME
-DESCRIPTION
-### Current Hurdles
 
 
 # General knowledge I've gained
@@ -62,7 +52,4 @@ DESCRIPTION
 
 # General TODOs
 * Document refrence code
-* Streamline project creation (create project with all the usual edits/additions to structure)
-* Streamline project build (DONE)
-* -> Debug should goes to Scripts/ & Production to Plugins/ 
-* Transfer to Splotch
+* Transfer to Splotch?

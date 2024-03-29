@@ -1,5 +1,9 @@
-run*
+# My files
 *.bat
+*.txt
+TemplatePlugin.cs
+
+# Output and enviroment files
 */bin/
 */obj/
 */.vs/
