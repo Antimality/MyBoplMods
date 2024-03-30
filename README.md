@@ -52,6 +52,4 @@ I just hate the buildup time on gust, make it shorter
 * Keyboard inputs are easy to accomplish locally but complicated (if even possible) to integrate online: the game only sends/recieves the inputs used by the game.
 * The replay files also keep just the input history, which is hilarious if you replay without the original mods.
 
-# General TODOs
-* Document refrence code
-* Transfer to Splotch?
+Antimality's Bopl Battle Mods © 2024 by Antimality is licensed under CC BY 4.0
