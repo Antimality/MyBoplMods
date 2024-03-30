@@ -1,13 +1,15 @@
 # MyBoplMods
  A collection of my Bopl Battle mods!
+ If you have any questions, you're welcome to ping me on the [official Bopl Battle modding discord server](https://discord.gg/official-bopl-battle-modding-comunity-1175164882388275310) @Antimality.
+ For any bugs in my mods, please [create an issue](https://github.com/Antimality/MyBoplMods/issues).
 
 # Mods:
 ## [Time Stop Timer](https://github.com/Antimality/MyBoplMods/releases/tag/TimeStopTimer-v1.0.0 "v1.0.0")
 Display how long until time stop starts and how long until it ends
-## Scale Control (WIP)
+## [Scale Control](https://github.com/Antimality/MyBoplMods/releases/tag/ScaleControl-v1.0.0 "v1.0.0")
 Fight like antman! Enlarge and shrink at will to shoot massive arrows and shrink for last minute dodges! 
 ### Current hurdles
-Currently works in local, more extensive testing needed.
+Currently works only in local.
 For it to work on multiplayer I need to change which inputs the game sends and recieves online.
 
 # Ideas:
