@@ -191,8 +191,10 @@ namespace ScaleControl
                             }
                         }
                     }
-
                 }
+
+                // Lower limit of size in case the mod is used with NoSizeCaps (smaller causes division by zero)
+                player.Scale = Fix.Max(player.Scale, (Fix)0.01f);
             }
         }
     }
