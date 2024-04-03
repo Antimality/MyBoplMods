@@ -27,11 +27,11 @@ namespace ScaleControl
     ///     Controller: Right trigger to grow, left to shrink (left stick button to reset)
     ///     
     /// TODOs:
-    ///     Test multiple controllers
     ///     Refine controller setup
     ///     Add configurable controls
     ///     Add max/min buttons?
     ///     Add audio? (it activates a lot and becomes loud and unpleasant. Maybe only make sound when you reach max?
+    ///     Scale cooldown by size? generally, you're less dangerous the smaller you are, might make sense to have quicker cooldowns
     /// </summary>
     [BepInPlugin("me.antimality." + PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public class Plugin : BaseUnityPlugin
@@ -48,10 +48,16 @@ namespace ScaleControl
 
         private void Update()
         {
-            // Only active functionality if lobby isn't online
-            if (!GameLobby.isOnlineGame)
+            // Online
+            if (GameLobby.isOnlineGame)
             {
-                PlayerPatch.Update();
+                // NOT IMPLEMENTED YET
+                //PlayerPatch.UpdateOnline();
+            }
+            // Offline
+            else
+            {
+                PlayerPatch.UpdateLocal();
             }
 
             // Inform user that the mod does not work online
@@ -97,7 +103,6 @@ namespace ScaleControl
 
             textComp.text = "WARNING: Scale Control mod does NOT work online";
             textComp.color = Color.red;
-            textComp.fontSize = 75f;
             textComp.alignment = TextAlignmentOptions.Center;
             textComp.font = LocalizedText.localizationTable.GetFont(Settings.Get().Language, false);
 
@@ -106,6 +111,9 @@ namespace ScaleControl
             // Width and Height of the screen
             float canvasHeight = canvas.GetComponent<RectTransform>().rect.height;
             float canvasWidth = canvas.GetComponent<RectTransform>().rect.width;
+
+            // Set text size acording to screen size
+            textComp.fontSize = canvasWidth/100;
 
             // Puts textbox on the bottom of the screen
             location.anchoredPosition = new Vector2(0, -canvasHeight / 2 + 100);
@@ -133,20 +141,39 @@ namespace ScaleControl
         private static Fix MouseFactor = (Fix)0.5;
         private static Fix GamepadFactor = (Fix)0.03;
 
-        public static void Update()
+        /// <summary>
+        /// On online games
+        /// </summary>
+        public static void UpdateOnline()
         {
-            List<Player> players = PlayerHandler.Get().PlayerList();
-
-            for (int i = 0; i < players.Count; i++)
+            foreach (Player player in PlayerHandler.Get().PlayerList())
             {
-                Player player = players[i];
+                /// Maybe send chat messages discribing each player and whether or not the should grow?
+                /// Each client would need to read and apply for all players
+                /// Send: currentLobby.SendChatString 
+                /// Recieve: SteamMatchmaking.OnChatMessage += OnChatMessageCallback;
+                /// and see: SteamManager.OnChatMessageCallback
 
-                // Only target local players
-                if (!player.IsLocalPlayer)
+                // Send
+                if (player.IsLocalPlayer)
                 {
-                    continue;
-                }
 
+                }
+                // Receive
+                else
+                {
+
+                }
+            }
+        }
+
+            /// <summary>
+            /// On local games
+            /// </summary>
+            public static void UpdateLocal()
+        {
+            foreach (Player player in PlayerHandler.Get().PlayerList())
+            {
                 // Keyboard and Mouse
                 if (player.UsesKeyboardAndMouse)
                 {
