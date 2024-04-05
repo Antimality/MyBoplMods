@@ -158,6 +158,9 @@ namespace TimeStopTimer
         }
     }
 
+    /// <summary>
+    /// Creates and handles textboxes
+    /// </summary>
     class TimerTextbox
     {
         // A list of all the textbox instances

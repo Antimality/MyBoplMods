@@ -34,7 +34,7 @@ namespace EnhancedGrapple
     }
 
     [HarmonyPatch]
-    public class patch
+    public class Patch
     {
         // Activates every time a grapple is shot
         //[HarmonyPatch(typeof(Rope))]
@@ -45,7 +45,7 @@ namespace EnhancedGrapple
         //    __instance.maxTravelTime = (Fix) 3;
         //}
 
-        // Called as long as the rope is attacked to a player
+        // Called as long as the rope is attached to a player
         [HarmonyPatch(typeof(Rope))]
         [HarmonyPatch(nameof(Rope.UpdateSim))]
         [HarmonyPrefix]
