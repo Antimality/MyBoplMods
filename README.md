@@ -57,6 +57,9 @@ Character cycles colors constantly. More just a POC to see what is possible.
 ## Quicker Gust
 I just hate the buildup time on gust, make it shorter
 
+# Other projects
+* Make a general way of detecting if both players have the mod, possibly using Steam Chat kicking.
+* Input library: Either using reflection or Steam Chat
 
 # General knowledge I've gained
 * Keyboard inputs are easy to accomplish locally but complicated (if even possible) to integrate online: the game only sends/recieves the inputs used by the game.
