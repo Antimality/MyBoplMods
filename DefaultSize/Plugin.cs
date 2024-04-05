@@ -4,6 +4,8 @@ using BepInEx.Logging;
 using BoplFixedMath;
 using HarmonyLib;
 using Steamworks.Data;
+using System;
+using System.Globalization;
 
 namespace DefaultSize
 {
@@ -69,8 +71,18 @@ namespace DefaultSize
             // If online
             if (GameLobby.isOnlineGame)
             {
-                // Use host's default size setting
-                defaultSize = (Fix)float.Parse(SteamManager.instance.currentLobby.GetData("DefaultSize"));
+                try
+                {
+                    // Use host's default size setting
+                    defaultSize = (Fix)float.Parse(SteamManager.instance.currentLobby.GetData("DefaultSize"), CultureInfo.InvariantCulture);
+                }
+                // If host doesn't have the mod
+                catch (FormatException)
+                {
+                    // Set size to normal
+                    defaultSize = Fix.One;
+                    Plugin.Log.LogError($"Host doesn't have DefaultSize mod. Disabling functionality.");
+                }
             }
             // If local
             else
