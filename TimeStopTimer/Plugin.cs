@@ -23,7 +23,7 @@ namespace TimeStopTimer
 
         private void Awake()
         {
-            Log = base.Logger;
+            Log = Logger;
 
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_NAME} is loaded!");
 

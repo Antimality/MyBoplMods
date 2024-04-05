@@ -18,7 +18,7 @@ namespace EnhancedGrapple
 
         private void Awake()
         {
-            Log = base.Logger;
+            Log = Logger;
 
             // Plugin startup logic
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_NAME} is loaded!");
