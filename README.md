@@ -13,16 +13,24 @@ Currently works only in local.
 For it to work on multiplayer I need to change which inputs the game sends and recieves online. Possible workaround: using steam chat.
 ## [Default Size](https://github.com/Antimality/MyBoplMods/releases/tag/DefaultSize-v1.0.0 "v1.0.0")
 Change the size all blobs start from in each round.
+## [Infinite Revive Uses](https://github.com/Antimality/MyBoplMods/releases/tag/InfiniteReviveUses-v1.0.0 "v1.0.0")
+No longer do you need multiple revive abilities to duplicate! Have infinitely many revives from just one ability!
+## [Instant Gust](https://github.com/Antimality/MyBoplMods/releases/tag/InstantGust-v1.0.0 "v1.0.0")
+Cast gust with lightning speed for the ultimate clutch!
 
 # Ideas:
+## EnhancedTimeStop (WIP)
+Enhancement suite for time stop that will include:
+* TimeStopTimer (and configuration to turn it on/off)
+* Configuration for casting time, cooldown time, and duration (Cole's mod)
 ## Cat & Mouse gamemode
 Based on [this](https://youtu.be/aT0UKAuCaTU?si=xn4OOS_zPOlJX7u6) video by Phunix.
 One player starts large and the others small.
 Add configurations:
 * Starting size for cat & mouse
 * Random cat/spesific cat (host)
-* Disable scale weapons
-Add a warning against using with DefaultSize
+* Disable scale weapons(?)
+Add a warning against using with DefaultSize, or just make it override DefualtSize somehow?
 ## Enhanced Grapple
 * More than one hook at the same time
 * Detatch button
@@ -38,10 +46,6 @@ Still haven't figured out how this ability works at all
 #### Current Hurdles
 No idea if direct control of motion is even possible
 Haven't figured out how to control abilities
-## Ability Cycle
-Change which ability (left/right/middle) get's swichted when picking up a new ability. Either controlled or random.
-#### Current Hurdles
-None expected, use AbilityStorm for refrence
 ## Ability Reroll
 Reroll abilities once per round. Good for all random games or when you get super countered and need a hail-mary.
 ## Ride The Lightning
@@ -54,10 +58,13 @@ Save/load premade ability loadouts.
 * Simpler version: button that sets everyone to all random in ability selection screen.
 ## Rainbow Player
 Character cycles colors constantly. More just a POC to see what is possible.
-## Quicker Gust
-I just hate the buildup time on gust, make it shorter
+## Ability Cycle
+Change which ability (left/right/middle) get's swichted when picking up a new ability. Either controlled or random. (get premission from AbilityStorm maker)
+## InfiniteBlackHoles
+Make as many black holes as you wish from a single ability!
 
 # Other projects
+* Steamline the Config Sync to an api-ish thing
 * Make a general way of detecting if both players have the mod, possibly using Steam Chat kicking.
 * Input library: Either using reflection or Steam Chat
 
