@@ -56,18 +56,26 @@ namespace DefaultSize
         private static Fix defaultSize;
 
         /// <summary>
-        /// I will fully admit - this is not strictly necessary.
-        /// This was added to ensure I don't desync when reloading the mod midgame for testing.
-        /// Otherwise, you could just put the if-else block in OnGameStart and don't need this "getter"
+        /// Set the scale of the players at the begining of each round
         /// </summary>
-        /// <returns></returns>
-        // ONLY USE THIS TO GET THE VALUE
-        private static Fix GetDefaultSize()
+        [HarmonyPatch(typeof(GameSessionHandler), "SpawnPlayers")]
+        [HarmonyPostfix]
+        public static void ChangePlayerSize()
         {
-            // Value already exists, return it
-            if (defaultSize > Fix.Zero) return defaultSize;
+            // Change the size of all players
+            foreach (Player player in PlayerHandler.Get().PlayerList())
+            {
+                player.Scale = defaultSize;
+            }
+        }
 
-            /// Initialize value:
+        /// <summary>
+        /// When you start a game, read the intended value
+        /// </summary>
+        [HarmonyPatch(typeof(GameSession), nameof(GameSession.Init))]
+        [HarmonyPostfix]
+        public static void OnGameStart()
+        {
             // If online
             if (GameLobby.isOnlineGame)
             {
@@ -90,33 +98,6 @@ namespace DefaultSize
                 // Use value from config
                 defaultSize = (Fix)Plugin.defaultSizeSetting.Value;
             }
-            return defaultSize;
-        }
-
-        /// <summary>
-        /// Set the scale of the players at the begining of each round
-        /// </summary>
-        [HarmonyPatch(typeof(GameSessionHandler), "SpawnPlayers")]
-        [HarmonyPostfix]
-        public static void ChangePlayerSize()
-        {
-            // Change the size of all players
-            foreach (Player player in PlayerHandler.Get().PlayerList())
-            {
-                player.Scale = GetDefaultSize();
-            }
-        }
-
-
-        /// <summary>
-        /// When you start a game, delete previously saved Default Size value
-        /// </summary>
-        [HarmonyPatch(typeof(GameSession), nameof(GameSession.Init))]
-        [HarmonyPostfix]
-        public static void OnGameStart()
-        {
-            // Reset the stored value
-            defaultSize = Fix.Zero;
         }
 
         /// <summary>
