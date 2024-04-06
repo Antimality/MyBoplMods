@@ -32,7 +32,7 @@ namespace DefaultSize
             harmony = new("me.antimality." + PluginInfo.PLUGIN_NAME);
 
             // Bind the config
-            defaultSizeSetting = config.Bind("Settings", "Default player size", 1f, "Minimum is 0.01 (Lower would cap to minimum). The default game's max scale is 3.");
+            defaultSizeSetting = config.Bind("Settings", "Default player size", 3f, "Minimum is 0.01 (Lower would cap to minimum). The default game's max scale is 3.");
             // Lower cap
             if (defaultSizeSetting.Value < 0.01f)
             {
