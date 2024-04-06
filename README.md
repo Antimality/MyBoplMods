@@ -17,6 +17,8 @@ Change the size all blobs start from in each round.
 No longer do you need multiple revive abilities to duplicate! Have infinitely many revives from just one ability!
 ## [Instant Gust](https://github.com/Antimality/MyBoplMods/releases/tag/InstantGust-v1.0.0 "v1.0.0")
 Cast gust with lightning speed for the ultimate clutch!
+## [InfiniteBlackHoles](https://github.com/Antimality/MyBoplMods/releases/tag/InfiniteBlackHoles-v1.0.0 "v1.0.0")
+Make as many black holes as you wish from a single ability!
 
 # Ideas:
 ## EnhancedTimeStop (WIP)
@@ -28,7 +30,7 @@ Based on [this](https://youtu.be/aT0UKAuCaTU?si=xn4OOS_zPOlJX7u6) video by Phuni
 One player starts large and the others small.
 Add configurations:
 * Starting size for cat & mouse
-* Random cat/spesific cat (host)
+* Random cat/spesific cat (by color?)
 * Disable scale weapons(?)
 Add a warning against using with DefaultSize, or just make it override DefualtSize somehow?
 ## Enhanced Grapple
@@ -60,8 +62,6 @@ Save/load premade ability loadouts.
 Character cycles colors constantly. More just a POC to see what is possible.
 ## Ability Cycle
 Change which ability (left/right/middle) get's swichted when picking up a new ability. Either controlled or random. (get premission from AbilityStorm maker)
-## InfiniteBlackHoles
-Make as many black holes as you wish from a single ability!
 
 # Other projects
 * Steamline the Config Sync to an api-ish thing
