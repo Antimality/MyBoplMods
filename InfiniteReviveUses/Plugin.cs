@@ -1,6 +1,7 @@
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
+using BoplFixedMath;
 using HarmonyLib;
 using Steamworks.Data;
 using System;
@@ -9,7 +10,6 @@ using System.Globalization;
 using UnityEngine;
 
 /// TODOs:
-///     Cooldown config (how to make sure it doesn't conflict with other cooldown mods?)
 ///     Ability cancel:
 ///         Add warning in ability select screen that it is disabled        
 ///         Try to remove it from ability drops/ability select? (backup option - it just gives something random instead)
@@ -30,6 +30,7 @@ namespace InfiniteReviveUses
         // Config file
         internal static ConfigFile config;
         internal static ConfigEntry<int> maxUsesSetting;
+        internal static ConfigEntry<float> cooldownSetting;
 
         private void Awake()
         {
@@ -40,12 +41,21 @@ namespace InfiniteReviveUses
 
             harmony = new("me.antimality." + PluginInfo.PLUGIN_NAME);
 
-            // Bind the config
+            // Bind max uses
             maxUsesSetting = config.Bind("Settings", "Max revive uses", -1, "-1 for unlimited, 0 to disable revives.");
             // Negative value = unlimited
             if (maxUsesSetting.Value < 0)
             {
                 maxUsesSetting.Value = int.MaxValue;
+                config.Save();
+            }
+
+            // Bind max uses
+            cooldownSetting = config.Bind("Settings", "Revive cooldown", 10f, "Default is 10.");
+            // Negative value = zero
+            if (cooldownSetting.Value < 0)
+            {
+                cooldownSetting.Value = 0;
                 config.Save();
             }
 
@@ -61,10 +71,7 @@ namespace InfiniteReviveUses
     [HarmonyPatch]
     public class Patch
     {
-        /* FUNCTIONALITY */
-        // Stored value
-        private static int maxUses;
-
+        /* MAX USES */
         // Tracks the revive anchors made by each instance of the Revive ability
         private static readonly Dictionary<Revive, List<RevivePositionIndicator>> anchors = new Dictionary<Revive, List<RevivePositionIndicator>>();
 
@@ -114,7 +121,20 @@ namespace InfiniteReviveUses
             return false;
         }
 
+        /* COOLDOWN */
+        [HarmonyPatch(typeof(Ability), nameof(Ability.Awake))]
+        [HarmonyPostfix]
+        public static void CustomizeCooldown(ref Ability __instance)
+        {
+            if (__instance.name.StartsWith("Revival")) __instance.Cooldown = cooldown;
+        }
+
+
         /* CONFIG SYNCING */
+        // Stored values
+        private static int maxUses;
+        private static Fix cooldown;
+
         /// <summary>
         /// When you start a game, delete previously saved Default Size value
         /// </summary>
@@ -128,13 +148,15 @@ namespace InfiniteReviveUses
                 try
                 {
                     // Use host's default size setting
-                    maxUses = int.Parse(SteamManager.instance.currentLobby.GetData("maxUses"), CultureInfo.InvariantCulture);
+                    maxUses = int.Parse(SteamManager.instance.currentLobby.GetData("reviveMaxUses"), CultureInfo.InvariantCulture);
+                    cooldown = (Fix)float.Parse(SteamManager.instance.currentLobby.GetData("reviveCooldown"), CultureInfo.InvariantCulture);
                 }
                 // If host doesn't have the mod
                 catch (FormatException)
                 {
-                    // Set size to normal
+                    // Set to normal values
                     maxUses = 1;
+                    cooldown = (Fix)10f;
                     Plugin.Log.LogError($"Host doesn't have InfiniteReviveUses mod. Disabling functionality.");
                 }
             }
@@ -143,6 +165,7 @@ namespace InfiniteReviveUses
             {
                 // Use value from config
                 maxUses = Plugin.maxUsesSetting.Value;
+                cooldown = (Fix)Plugin.cooldownSetting.Value;
             }
         }
 
@@ -158,7 +181,8 @@ namespace InfiniteReviveUses
             {
                 // Harmony lint thinks this won't work (because I'm editing a parameter's value), but it does
                 #pragma warning disable Harmony003
-                lobby.SetData("maxUses", Plugin.maxUsesSetting.Value.ToString());
+                lobby.SetData("reviveMaxUses", Plugin.maxUsesSetting.Value.ToString());
+                lobby.SetData("reviveCooldown", Plugin.cooldownSetting.Value.ToString());
             }
         }
     }
