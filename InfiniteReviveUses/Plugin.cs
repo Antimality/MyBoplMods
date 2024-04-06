@@ -2,22 +2,23 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using Steamworks.Data;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
-///
 /// TODOs:
-///     Add online using config logic from DefaultSize
-///     Add cooldown config
-///     Make it disable the ability when max-uses is zero?
+///     Cooldown config (how to make sure it doesn't conflict with other cooldown mods?)
+///     Ability cancel:
 ///         Add warning in ability select screen that it is disabled        
-///         Try to remove it from ability drops?
-///
+///         Try to remove it from ability drops/ability select? (backup option - it just gives something random instead)
 
 namespace InfiniteReviveUses
 {
     /// <summary>
-    /// Use a single revive to clone!
+    /// Unlimited revives from a single ability!
+    /// Or configure to limit/disable the ability.
     /// </summary>
     [BepInPlugin("me.antimality." + PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public class Plugin : BaseUnityPlugin
@@ -28,7 +29,7 @@ namespace InfiniteReviveUses
 
         // Config file
         internal static ConfigFile config;
-        internal static ConfigEntry<int> maxUseSetting;
+        internal static ConfigEntry<int> maxUsesSetting;
 
         private void Awake()
         {
@@ -40,11 +41,11 @@ namespace InfiniteReviveUses
             harmony = new("me.antimality." + PluginInfo.PLUGIN_NAME);
 
             // Bind the config
-            maxUseSetting = config.Bind("Settings", "Max revive uses", -1, "-1 for unlimited, 0 to disable revives.");
-            // Lower cap
-            if (maxUseSetting.Value < 0)
+            maxUsesSetting = config.Bind("Settings", "Max revive uses", -1, "-1 for unlimited, 0 to disable revives.");
+            // Negative value = unlimited
+            if (maxUsesSetting.Value < 0)
             {
-                maxUseSetting.Value = int.MaxValue;
+                maxUsesSetting.Value = int.MaxValue;
                 config.Save();
             }
 
@@ -60,6 +61,13 @@ namespace InfiniteReviveUses
     [HarmonyPatch]
     public class Patch
     {
+        /* FUNCTIONALITY */
+        // Stored value
+        private static int maxUses;
+
+        // Tracks the revive anchors made by each instance of the Revive ability
+        private static readonly Dictionary<Revive, List<RevivePositionIndicator>> anchors = new Dictionary<Revive, List<RevivePositionIndicator>>();
+
         /// <summary>
         /// Replaces the original function. Removes the if block that removes the previous revive anchor.
         /// </summary>
@@ -71,7 +79,7 @@ namespace InfiniteReviveUses
             /// This works, but still has the casting affect.
             /// Better to add a patch in the ability itself (CastSpell)
             ///
-            if (Plugin.maxUseSetting.Value == 0)
+            if (Plugin.maxUsesSetting.Value == 0)
             {
                 // Delete the visual anchor
                 indicator.GetComponent<RevivePositionIndicator>().End();
@@ -79,25 +87,6 @@ namespace InfiniteReviveUses
                 return false;
             }
 
-            /// Removed the following section:
-            /*
-            if (___reviveIndicator != null && !___reviveIndicator.IsDestroyed)
-            {
-                ___reviveIndicator.End();
-                int num = ___player.RespawnPositions.Count - 1;
-                while (num >= 0 && num < ___player.RespawnPositions.Count)
-                {
-                    if (___player.RespawnPositions[num] == null || (___player.RespawnPositions[num] != null && ___player.RespawnPositions[num].IsDestroyed))
-                    {
-                        ___player.RespawnPositions.RemoveAt(num);
-                    }
-                    else
-                    {
-                        num--;
-                    }
-                }
-            }
-            */
             // Add the new revive indicator:
             ___reviveIndicator = indicator.GetComponent<RevivePositionIndicator>();
             ___player = PlayerHandler.Get().GetPlayer(__instance.GetComponent<IPlayerIdHolder>().GetPlayerId());
@@ -105,26 +94,72 @@ namespace InfiniteReviveUses
             ___player.ReviveInstance = __instance;
             ___player.RespawnPositions.Add(___reviveIndicator);
 
-            ///
-            /// Not good, this limits the player's total number of anchors.
-            /// need to keep a list for each revive instance
-            ///
-            // Max uses
-            int overflow = Plugin.maxUseSetting.Value - ___player.RespawnPositions.Count;
-            if (overflow < 0)
+            // Add to count
+            if (anchors.ContainsKey(__instance)) anchors[__instance].Add(___reviveIndicator);
+            else anchors[__instance] = [___reviveIndicator];
+
+            // If there's too many - remove the oldest anchor from this instance
+            if (anchors[__instance].Count > maxUses)
             {
-                // Take the oldest anchors
-                foreach (RevivePositionIndicator i in ___player.RespawnPositions.GetRange(0, -overflow))
-                {
-                    // Delete them
-                    i.End();
-                }
+                RevivePositionIndicator anchor = anchors[__instance][0];
+                // Remove from player
+                ___player.RespawnPositions.Remove(anchor);
+                // Remove object
+                anchor.End();
                 // Remove from list
-                ___player.RespawnPositions.RemoveRange(0, -overflow);
+                anchors[__instance].Remove(anchor);
             }
 
             // Disable the original function
             return false;
+        }
+
+        /* CONFIG SYNCING */
+        /// <summary>
+        /// When you start a game, delete previously saved Default Size value
+        /// </summary>
+        [HarmonyPatch(typeof(GameSession), nameof(GameSession.Init))]
+        [HarmonyPostfix]
+        public static void OnGameStart()
+        {
+            // If online
+            if (GameLobby.isOnlineGame)
+            {
+                try
+                {
+                    // Use host's default size setting
+                    maxUses = int.Parse(SteamManager.instance.currentLobby.GetData("maxUses"), CultureInfo.InvariantCulture);
+                }
+                // If host doesn't have the mod
+                catch (FormatException)
+                {
+                    // Set size to normal
+                    maxUses = 1;
+                    Plugin.Log.LogError($"Host doesn't have InfiniteReviveUses mod. Disabling functionality.");
+                }
+            }
+            // If local
+            else
+            {
+                // Use value from config
+                maxUses = Plugin.maxUsesSetting.Value;
+            }
+        }
+
+        /// <summary>
+        /// When creating a lobby, inject the maxUses value from config to the lobby
+        /// </summary>
+        [HarmonyPatch(typeof(SteamManager), "OnLobbyEnteredCallback")]
+        [HarmonyPostfix]
+        public static void OnEnterLobby(Lobby lobby)
+        {
+            // If I am the owner of this lobby, load the value
+            if (SteamManager.LocalPlayerIsLobbyOwner)
+            {
+                // Harmony lint thinks this won't work (because I'm editing a parameter's value), but it does
+                #pragma warning disable Harmony003
+                lobby.SetData("maxUses", Plugin.maxUsesSetting.Value.ToString());
+            }
         }
     }
 }
