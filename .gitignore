@@ -1,7 +1,15 @@
 # My files
 *.bat
+*.py
 *.txt
 Template*
+Directory.Build.*
+*REDACTED*
+
+# Files for thunderstore
+*/manifest.json
+*/*.zip
+*/CHANGELOG.md
 
 # Output and enviroment files
 */bin/

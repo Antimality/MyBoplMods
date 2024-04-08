@@ -16,6 +16,7 @@ using UnityEngine.SceneManagement;
 /// If that's so, change the grow/shrink abilities to do what I want and lower their cooldown
 /// 
 /// Plausible workaround: steam chat, see https://discord.com/channels/1175164882388275310/1197174978618064896/1223581167903834132
+/// Or wait for splotch networking
 ///
 
 namespace ScaleControl
