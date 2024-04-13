@@ -78,7 +78,7 @@ namespace TimeStopTimer
             // Find the matching textbox by player and type
             foreach (TimerTextbox box in TimerTextbox.Textboxes)
             {
-                if (box.playerID == ___playerInfo.playerId && !box.casting)
+                if (box.playerID == ___playerInfo.playerId && box.timeStopInstance == null)
                 {
                     box.Dispose();
                     break;
@@ -98,7 +98,7 @@ namespace TimeStopTimer
             // Find the matching textbox by player and type
             foreach (TimerTextbox box in TimerTextbox.Textboxes)
             {
-                if (box.playerID == ___playerInfo.playerId && !box.casting)
+                if (box.playerID == ___playerInfo.playerId && box.timeStopInstance == null)
                 {
                     // Display time left. The added 1.25s is to accomidate the enter animation keyframes
                     box.Update((float)(___castTime - ___timeSinceActivation) + 1.25f);
@@ -113,9 +113,9 @@ namespace TimeStopTimer
         /// </summary>
         [HarmonyPatch(typeof(TimeStop), nameof(TimeStop.Init))]
         [HarmonyPostfix]
-        public static void StartTimeStop(ref int ___casterId)
+        public static void StartTimeStop(ref TimeStop __instance, ref int ___casterId)
         {
-            new TimerTextbox(___casterId, casting: true);
+            new TimerTextbox(___casterId, __instance);
         }
 
         /// <summary>
@@ -123,12 +123,12 @@ namespace TimeStopTimer
         /// </summary>
         [HarmonyPatch(typeof(TimeStop), nameof(TimeStop.End))]
         [HarmonyPrefix]
-        public static void EndTimeStop(ref int ___casterId)
+        public static void EndTimeStop(ref TimeStop __instance, ref int ___casterId)
         {
-            // Find the matching textbox by player and type
+            // Find the matching textbox by instance
             foreach (TimerTextbox box in TimerTextbox.Textboxes)
             {
-                if (box.playerID == ___casterId && box.casting)
+                if (box.timeStopInstance == __instance)
                 {
                     box.Dispose();
                     break;
@@ -143,12 +143,12 @@ namespace TimeStopTimer
         /// <param name="___secondsElapsed">How long the player has been casting</param>
         [HarmonyPatch(typeof(TimeStop), nameof(TimeStop.UpdateSim))]
         [HarmonyPrefix]
-        public static void DuringTimeStop(ref float ___duration, ref float ___secondsElapsed, ref int ___casterId)
+        public static void DuringTimeStop(ref TimeStop __instance, ref float ___duration, ref float ___secondsElapsed, ref int ___casterId)
         {
-            // Find the matching textbox by player and type
+            // Find the matching textbox by instance
             foreach (TimerTextbox box in TimerTextbox.Textboxes)
             {
-                if (box.playerID == ___casterId && box.casting)
+                if (box.timeStopInstance == __instance)
                 {
                     // Display time left. The added 2s is to accomidate the exit animation keyframes
                     box.Update((float)(___duration - ___secondsElapsed) + 2f);
@@ -171,22 +171,31 @@ namespace TimeStopTimer
         /// </summary>
         public readonly int playerID;
         /// <summary>
-        /// True: Casting time stop
-        /// False: During time freeze
+        /// Instance of TimeStop tied to this textbox (during freeze)
         /// </summary>
-        public readonly bool casting;
+        public readonly TimeStop timeStopInstance;
 
         private Canvas canvas;
         private GameObject textObj;
         private TextMeshProUGUI textComp;
         private RectTransform location;
 
-        public TimerTextbox(int playerID, bool casting = false)
+        public TimerTextbox(int playerID, TimeStop timeStopInstance = null)
         {
+            // Remove other textboxes of the same player
+            foreach (TimerTextbox box in Textboxes)
+            {
+                if (box.playerID == playerID)
+                {
+                    box.Dispose();
+                    break;
+                }
+            }
+
             Textboxes.Add(this);
 
             this.playerID = playerID;
-            this.casting = casting;
+            this.timeStopInstance = timeStopInstance;
 
             Summon();
         }
