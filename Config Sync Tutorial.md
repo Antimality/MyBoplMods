@@ -52,7 +52,7 @@ public static void OnGameStart()
     if (GameLobby.isOnlineGame)
     {
         // Use host's setting
-        storedValue = SteamManager.instance.currentLobby.GetData("YOURVALUE")
+        storedValue = SteamManager.instance.currentLobby.GetData("YOURVALUE");
     }
     else
     {
@@ -66,5 +66,6 @@ You can, of course, use this if block anywhere, not just `GameSession.Init`, but
 
 Notes:
 * I used harmony annotation, you can, obviously, accomplish the same using reflection.
+* Lobby.SetData only recieves Strings, which means you must store your values as such and parse them back after Lobby.GetData.
 * This *will* break if you reload a plugin mid-game, but since that can't happen accidentily, I opted to ignore this. There is a way to handle it, as you can see [here](https://github.com/Antimality/MyBoplMods/blob/830e66bc98c4971be5d098f450446bfee6533b4b/DefaultSize/Plugin.cs#L63). Or by just doing the entire if block every time the value is used.
 * I recommend looking at DefaultSize or InfiniteReviveUses for refrence
