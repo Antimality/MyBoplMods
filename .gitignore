@@ -1,4 +1,5 @@
 # My files
+*.dll
 *.bat
 *.py
 *.txt
