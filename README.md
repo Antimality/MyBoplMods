@@ -19,6 +19,10 @@ No longer do you need multiple revive abilities to duplicate! Have infinitely ma
 Cast gust with lightning speed for the ultimate clutch!
 ## [InfiniteBlackHoles](https://github.com/Antimality/MyBoplMods/releases/tag/InfiniteBlackHoles-v1.0.0 "v1.0.0")
 Make as many black holes as you wish from a single ability!
+## [SuddenDeathTimer](https://github.com/Antimality/MyBoplMods/releases/tag/SuddenDeathTimer-v1.0.0 "v1.0.0")
+Displays a timer on the top of the screen indicating how long until Sudden Death begins.
+## [RainbowPlayer](https://github.com/Antimality/MyBoplMods/releases/tag/RainbowPlayer-v1.0.0 "v1.0.0")
+Give everyone wacky, eye-straining, changing colors!
 
 # Ideas:
 ## EnhancedTimeStop (WIP)

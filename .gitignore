@@ -4,6 +4,7 @@
 *.txt
 Template*
 Directory.Build.*
+.editorconfig
 *REDACTED*
 
 # Files for thunderstore
