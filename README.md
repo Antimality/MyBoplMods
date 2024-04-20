@@ -36,7 +36,7 @@ Based on [this](https://youtu.be/aT0UKAuCaTU?si=xn4OOS_zPOlJX7u6) video by Phuni
 One player starts large and the others small.
 Add configurations:
 * Starting size for cat & mouse
-* Random cat/spesific cat (by color?)
+* Random cat/specific cat (by color?)
 * Disable scale weapons(?)
 Add a warning against using with DefaultSize, or just make it override DefualtSize somehow?
 ## Enhanced Grapple
@@ -48,7 +48,7 @@ Add a warning against using with DefaultSize, or just make it override DefualtSi
 #### Current Hurdles
 Still haven't figured out how this ability works at all
 ## Rock enhancements:
-* Dry Rock:Rock jumps off water for extreme rock plays!
+* Dry Rock: Rock jumps off water for extreme rock plays!
 * Cancle Rock: Cancel rock at will 
 * Player Rock: Use abilities while in rock form
 #### Current Hurdles
