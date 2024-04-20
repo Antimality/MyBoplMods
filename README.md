@@ -17,12 +17,14 @@ Change the size all blobs start from in each round.
 No longer do you need multiple revive abilities to duplicate! Have infinitely many revives from just one ability!
 ## [Instant Gust](https://github.com/Antimality/MyBoplMods/releases/tag/InstantGust-v1.0.0 "v1.0.0")
 Cast gust with lightning speed for the ultimate clutch!
-## [InfiniteBlackHoles](https://github.com/Antimality/MyBoplMods/releases/tag/InfiniteBlackHoles-v1.0.0 "v1.0.0")
+## [Infinite Black Holes](https://github.com/Antimality/MyBoplMods/releases/tag/InfiniteBlackHoles-v1.0.0 "v1.0.0")
 Make as many black holes as you wish from a single ability!
-## [SuddenDeathTimer](https://github.com/Antimality/MyBoplMods/releases/tag/SuddenDeathTimer-v1.0.0 "v1.0.0")
+## [Sudden Death Timer](https://github.com/Antimality/MyBoplMods/releases/tag/SuddenDeathTimer-v1.0.0 "v1.0.0")
 Displays a timer on the top of the screen indicating how long until Sudden Death begins.
-## [RainbowPlayer](https://github.com/Antimality/MyBoplMods/releases/tag/RainbowPlayer-v1.0.0 "v1.0.0")
+## [Rainbow Player](https://github.com/Antimality/MyBoplMods/releases/tag/RainbowPlayer-v1.0.0 "v1.0.0")
 Give everyone wacky, eye-straining, changing colors!
+## [Always Wide Search](https://github.com/Antimality/MyBoplMods/releases/tag/AlwaysWideSearch-v1.0.0 "v1.0.0")
+Search for all lobbies immediately, regardless of distance.
 
 # Ideas:
 ## EnhancedTimeStop (WIP)
