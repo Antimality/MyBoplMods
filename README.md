@@ -4,13 +4,10 @@
  For any bugs in my mods, please [create an issue](https://github.com/Antimality/MyBoplMods/issues).
 
 # Mods:
-## [Time Stop Timer](https://github.com/Antimality/MyBoplMods/releases/tag/TimeStopTimer-v1.0.0 "v1.0.0")
+## [Time Stop Timer](https://github.com/Antimality/MyBoplMods/releases/tag/TimeStopTimer-v1.1.0 "v1.1.0")
 Display how long until time stop starts and how long until it ends
 ## [Scale Control](https://github.com/Antimality/MyBoplMods/releases/tag/ScaleControl-v1.0.0 "v1.0.0")
 Fight like antman! Enlarge and shrink at will to shoot massive arrows and shrink for last minute dodges! 
-#### Current Hurdles
-Currently works only in local.
-For it to work on multiplayer I need to change which inputs the game sends and recieves online. Possible workaround: using steam chat.
 ## [Default Size](https://github.com/Antimality/MyBoplMods/releases/tag/DefaultSize-v1.0.0 "v1.0.0")
 Change the size all blobs start from in each round.
 ## [Infinite Revive Uses](https://github.com/Antimality/MyBoplMods/releases/tag/InfiniteReviveUses-v1.0.0 "v1.0.0")
@@ -25,6 +22,8 @@ Displays a timer on the top of the screen indicating how long until Sudden Death
 Give everyone wacky, eye-straining, changing colors!
 ## [Always Wide Search](https://github.com/Antimality/MyBoplMods/releases/tag/AlwaysWideSearch-v1.0.0 "v1.0.0")
 Search for all lobbies immediately, regardless of distance.
+## [Time Stop Enhanced](https://github.com/Antimality/MyBoplMods/releases/tag/TimeStopEnhanced-v1.0.0 "v1.0.0")
+Adds configurations for the Time Stop ability
 
 # Ideas:
 ## EnhancedTimeStop (WIP)
@@ -45,38 +44,23 @@ Add a warning against using with DefaultSize, or just make it override DefualtSi
 * Longer range
 * If connected to player (or anything that isn't a platform) pull it to you instead of going to it
 * Shoot a second time to attach to something else like Just Cause?
-#### Current Hurdles
-Still haven't figured out how this ability works at all
 ## Rock enhancements:
 * Dry Rock: Rock jumps off water for extreme rock plays!
 * Cancle Rock: Cancel rock at will 
 * Player Rock: Use abilities while in rock form
-#### Current Hurdles
-No idea if direct control of motion is even possible
-Haven't figured out how to control abilities
 ## Ability Reroll
 Reroll abilities once per round. Good for all random games or when you get super countered and need a hail-mary.
 ## Ride The Lightning
 Tesla coil lighting is a solid surface instead of a damaging line. You can still kill directly by squishing, or combo with other abilities, such as Sonic for increased range.
 * Bonus, thowable coil?
-#### Current Hurdles
-No idea how to make/work with Physics objects
-## Loadouts
+## Loadouts - worked on by PizzaMan730
 Save/load premade ability loadouts.
 * Simpler version: button that sets everyone to all random in ability selection screen.
-## Rainbow Player
-Character cycles colors constantly. More just a POC to see what is possible.
 ## Ability Cycle
 Change which ability (left/right/middle) get's swichted when picking up a new ability. Either controlled or random. (get premission from AbilityStorm maker)
 
 # Other projects
-* Steamline the Config Sync to an api-ish thing
-* Make a general way of detecting if both players have the mod, possibly using Steam Chat kicking.
-* Input library: Either using reflection or Steam Chat
-
-# General knowledge I've gained
-* Keyboard inputs are easy to accomplish locally but complicated (if even possible) to integrate online: the game only sends/recieves the inputs used by the game.
-* The replay files also keep just the input history, which is hilarious if you replay without the original mods.
-* How to use config and sync settings across players
+* Steamline the Config Sync to an api-ish thing - merged with Almafa's ModSyncer (WIP)
+* Input library: Either using reflection or SplotchLib Networking
 
 Antimality's Bopl Battle Mods © 2024 by Antimality is licensed under CC BY 4.0
