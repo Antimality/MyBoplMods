@@ -7,3 +7,5 @@ Controller: Right trigger to grow, left trigger to shrink, left stick button to 
 
 ## DOES _NOT_ WORK ONLINE
 You can play online with the mod installed but it won't do anything.
+
+Icon by Codemob!
