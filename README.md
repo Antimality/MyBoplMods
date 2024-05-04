@@ -26,11 +26,16 @@ Search for all lobbies immediately, regardless of distance.
 Adds configurations for the Time Stop ability
 
 # Ideas:
-## EnhancedTimeStop (WIP)
-Enhancement suite for time stop that will include:
-* TimeStopTimer (and configuration to turn it on/off)
-* Configuration for casting time, cooldown time, and duration (Cole's mod)
-## Cat & Mouse gamemode
+## Timers Galore (WIP):
+Timers & indicators for many things, planning to add:
+* Roll
+* Bow
+* Granade
+* Beam
+* Rock
+## InstaDup
+Change the revive ability to instantly create a clone, instead
+## Cat & Mouse gamemode (WIP)
 Based on [this](https://youtu.be/aT0UKAuCaTU?si=xn4OOS_zPOlJX7u6) video by Phunix.
 One player starts large and the others small.
 Add configurations:
@@ -46,8 +51,9 @@ Add a warning against using with DefaultSize, or just make it override DefualtSi
 * Shoot a second time to attach to something else like Just Cause?
 ## Rock enhancements:
 * Dry Rock: Rock jumps off water for extreme rock plays!
-* Cancle Rock: Cancel rock at will 
+* Cancelable Rock: Cancel rock at will
 * Player Rock: Use abilities while in rock form
+* Instant Rock: Remove animation time
 ## Ability Reroll
 Reroll abilities once per round. Good for all random games or when you get super countered and need a hail-mary.
 ## Ride The Lightning
